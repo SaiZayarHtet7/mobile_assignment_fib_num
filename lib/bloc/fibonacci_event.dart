@@ -9,14 +9,15 @@ class FibonacciGenerateList extends FibonacciEvent {
 }
 
 class FibonacciAddNumber extends FibonacciEvent {
-  final int number;
-  final FiboanacciType type;
+  final int numberIndex;
+  final FibonacciType type;
 
-  FibonacciAddNumber({required this.number,required this.type});
+  FibonacciAddNumber({required this.numberIndex, required this.type});
 }
 
 class FibonacciRemoveNumber extends FibonacciEvent {
- final int number;
-  final FiboanacciType type;
-   FibonacciRemoveNumber({required this.number, required this.type});
+  final int numberIndex;
+  final FibonacciType type;
+
+  FibonacciRemoveNumber({required this.numberIndex, required this.type});
 }

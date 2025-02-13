@@ -38,8 +38,8 @@ class _FibonacciListScreenState extends State<FibonacciListScreen> {
         listener: (context, state) async {
           if (state.status == FibonacciStatus.success &&
               state.removeIndex != -1) {
-            int scrollIndex = state.displayFibonaciList.indexWhere((element) =>
-                element.index == state.removeIndex);
+            int scrollIndex = state.displayFibonaciList.indexWhere(
+                (element) => element.numberIndex == state.removeIndex);
             await _animateToIndex(scrollIndex);
           }
         },
@@ -47,34 +47,67 @@ class _FibonacciListScreenState extends State<FibonacciListScreen> {
           final fibonacciList = state.displayFibonaciList;
           final removeIndex = state.removeIndex;
 
-          return ListView.builder(
-            controller: controller,
-            itemBuilder: (_, index) {
-              final number = fibonacciList[index].number;
-              final type = fibonacciList[index].type;
-              final numberIndex = fibonacciList[index].index;
-              return ItemWidget(
-                  onTap: () {
-                    context
-                        .read<FibonacciBloc>()
-                        .add(FibonacciAddNumber(type: type, number: number));
-                    showModalBottomSheet(
-                        context: context,
-                        builder: (context) => ItemTypeListBottomSheet(
-                              type: type,
-                              highLighNumber: number,
-                            ));
-                  },
-                  color: Colors.red,
-                  index: numberIndex,
-                  selected: removeIndex == numberIndex,
-                  fibonacciNumber: number.toString(),
-                  type: type);
-            },
-            itemCount: fibonacciList.length,
-          );
+          return FibonacciListWidget(
+              controller: controller,
+              fibonacciList: fibonacciList,
+              removeIndex: removeIndex);
         },
       ),
+    );
+  }
+}
+
+/// A widget that displays a list of Fibonacci numbers.
+///
+/// This widget takes a [ScrollController], a list of [FibonacciNumber] objects,
+/// and an index of the number to be highlighted. It builds a scrollable list
+/// of items, each representing a Fibonacci number. When an item is tapped,
+/// it triggers an event to add a new Fibonacci number and shows a bottom sheet
+/// with the item type list.
+///
+/// Parameters:
+/// - [controller]: The [ScrollController] for the list view.
+/// - [fibonacciList]: The list of [FibonacciNumber] objects to display.
+/// - [removeIndex]: The index of the Fibonacci number to be highlighted.
+class FibonacciListWidget extends StatelessWidget {
+  const FibonacciListWidget({
+    super.key,
+    required this.controller,
+    required this.fibonacciList,
+    required this.removeIndex,
+  });
+
+  final ScrollController controller;
+  final List<FibonacciNumber> fibonacciList;
+  final int removeIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      controller: controller,
+      itemBuilder: (_, index) {
+        final number = fibonacciList[index].number;
+        final type = fibonacciList[index].type;
+        final numberIndex = fibonacciList[index].numberIndex;
+        return ItemWidget(
+            onTap: () async {
+              context.read<FibonacciBloc>().add(
+                  FibonacciAddNumber(type: type, numberIndex: numberIndex));
+              await showModalBottomSheet(
+                context: context,
+                builder: (context) => ItemTypeListBottomSheet(
+                  type: type,
+                  highlightNumberIndex: numberIndex,
+                ),
+              );
+            },
+            color: Colors.red,
+            index: numberIndex,
+            selected: removeIndex == numberIndex,
+            fibonacciNumber: number.toString(),
+            type: type);
+      },
+      itemCount: fibonacciList.length,
     );
   }
 }

@@ -4,7 +4,7 @@ import 'package:mobile_assignment_fib_num/bloc/fibonacci_bloc.dart';
 class ItemWidget extends StatelessWidget {
   final int index;
   final String fibonacciNumber;
-  final FiboanacciType type;
+  final FibonacciType type;
   final Function()? onTap;
   final bool? selected;
   final Color? color;
@@ -34,11 +34,11 @@ class ItemWidget extends StatelessWidget {
 
   Icon iconType() {
     switch (type) {
-      case FiboanacciType.circle:
+      case FibonacciType.circle:
         return Icon(Icons.circle);
-      case FiboanacciType.cross:
+      case FibonacciType.cross:
         return Icon(Icons.close);
-      case FiboanacciType.square:
+      case FibonacciType.square:
         return Icon(Icons.square_outlined);
     }
   }

@@ -5,7 +5,7 @@ enum FibonacciStatus { initial, loading, success, failure }
 class FibonacciState {
   final FibonacciStatus status;
   final List<FibonacciNumber> fibonacciList;
-  final Map<FiboanacciType, List<FibonacciNumber>> typeMap;
+  final Map<FibonacciType, List<FibonacciNumber>> typeMap;
   final String message;
   final int removeIndex;
 
@@ -27,16 +27,16 @@ class FibonacciState {
         message: '',
         removeIndex: -1,
         typeMap: {
-          FiboanacciType.circle: [],
-          FiboanacciType.square: [],
-          FiboanacciType.cross: []
+          FibonacciType.circle: [],
+          FibonacciType.square: [],
+          FibonacciType.cross: []
         });
   }
 
-  copyWith(
+  FibonacciState copyWith(
       {FibonacciStatus? status,
       List<FibonacciNumber>? fibonacciList,
-      Map<FiboanacciType, List<FibonacciNumber>>? typeMap,
+      Map<FibonacciType, List<FibonacciNumber>>? typeMap,
       int? removeIndex,
       String? message}) {
     return FibonacciState(
@@ -50,22 +50,25 @@ class FibonacciState {
 
 class FibonacciNumber {
   final int number;
-  final FiboanacciType type;
-  final int index;
+  final FibonacciType type;
+  final int numberIndex;
   final bool isEnable;
 
   FibonacciNumber(
-      {required this.type, required this.number,required this.index, this.isEnable = true});
+      {required this.type,
+      required this.number,
+      required this.numberIndex,
+      this.isEnable = true});
 
   FibonacciNumber copyWith(
-      {int? number, FiboanacciType? type, bool? isEnable,int? index}) {
+      {int? number, FibonacciType? type, bool? isEnable, int? numberIndex}) {
     return FibonacciNumber(
         number: number ?? this.number,
         type: type ?? this.type,
         isEnable: isEnable ?? this.isEnable,
-        index: index ?? this.index
+        numberIndex: numberIndex ?? this.numberIndex
         );
   }
 }
 
-enum FiboanacciType { circle, square, cross }
+enum FibonacciType { circle, square, cross }

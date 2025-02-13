@@ -22,38 +22,41 @@ class FibonacciBloc extends Bloc<FibonacciEvent, FibonacciState> {
     }
   }
 
-  FutureOr<void> _addDataToBottomSheet(event, emit) {
+  FutureOr<void> _addDataToBottomSheet(FibonacciAddNumber event, emit) {
     // adding the number to the typeMap
     final typeMap = state.typeMap;
     final typeList = typeMap[event.type] ?? [];
     final number = state.fibonacciList
-        .firstWhere((element) => element.number == event.number);
+        .firstWhere((element) => element.numberIndex == event.numberIndex);
     typeList.add(number);
     typeMap[event.type] = typeList;
 
     // disable the number from the fibonacciList
-    final (fibonacciList,_) = _enableOrDisableNumber(event.number,isEnable: false);
+    final (fibonacciList, _) =
+        _enableOrDisableNumber(event.numberIndex, isEnable: false);
 
     emit(state.copyWith(typeMap: typeMap, fibonacciList: fibonacciList,removeIndex: -1));
   }
 
 
-  FutureOr<void> _removeDataFromBottomSheet(event, emit) {
+  FutureOr<void> _removeDataFromBottomSheet(FibonacciRemoveNumber event, emit) {
     // removing the number from the typeMap
     final typeMap = state.typeMap;
     final typeList = typeMap[event.type] ?? [];
-    typeList.removeWhere((element) => element.number == event.number);
+    typeList.removeWhere((element) => element.numberIndex == event.numberIndex);
     typeMap[event.type] = typeList;
 
     // enable the number from the fibonacciList
-    var( fibonacciList, removeIndex) = _enableOrDisableNumber(event.number, isEnable: true);
+    var (fibonacciList, removeIndex) =
+        _enableOrDisableNumber(event.numberIndex, isEnable: true);
 
     emit(state.copyWith(typeMap: typeMap, fibonacciList: fibonacciList,removeIndex: removeIndex));
   }
 
-  (List<FibonacciNumber>, int) _enableOrDisableNumber(int number, {required bool isEnable}) {
+  (List<FibonacciNumber>, int) _enableOrDisableNumber(int numberIndex,
+      {required bool isEnable}) {
     int index = state.fibonacciList
-        .indexWhere((element) => element.number == number);
+        .indexWhere((element) => element.numberIndex == numberIndex);
     var fibonacciList =  state.fibonacciList;
     
     fibonacciList[index] = fibonacciList[index].copyWith(isEnable: isEnable);
@@ -66,26 +69,28 @@ class FibonacciBloc extends Bloc<FibonacciEvent, FibonacciState> {
   List<FibonacciNumber> _generateFibonacci(int n) {
     
     List<FibonacciNumber> fibonacciNumbers = [
-      FibonacciNumber(type: _generateType(0), number: 0,index: 0),
-      FibonacciNumber(type: _generateType(1), number: 1,index: 1),
+      FibonacciNumber(type: _generateType(0), number: 0, numberIndex: 0),
+      FibonacciNumber(type: _generateType(1), number: 1, numberIndex: 1),
     ];
 
     for (int i = 2; i <= n; i++) {
-      int number = fibonacciNumbers[i - 1].number + fibonacciNumbers[i - 2].number;
-     
+      int number =
+          fibonacciNumbers[i - 1].number + fibonacciNumbers[i - 2].number;
       fibonacciNumbers
-          .add(FibonacciNumber(type: _generateType(i), number: number,index: i));
+          .add(FibonacciNumber(
+          type: _generateType(i), number: number, numberIndex: i));
     }
 
     return fibonacciNumbers;
   }
 
-  FiboanacciType _generateType(int index) {
+  FibonacciType _generateType(int index) {
     var remainder = index % 4;
     var quotient = index ~/ 4;
-    if (remainder == 0) return FiboanacciType.circle;
+    if (remainder == 0) return FibonacciType.circle;
+
     return (quotient % 2 == 0) 
-      ? (remainder == 3 ? FiboanacciType.cross : FiboanacciType.square)
-      : (remainder == 3 ? FiboanacciType.square : FiboanacciType.cross);
+        ? (remainder == 3 ? FibonacciType.cross : FibonacciType.square)
+        : (remainder == 3 ? FibonacciType.square : FibonacciType.cross);
   }
 }

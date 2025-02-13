@@ -6,10 +6,10 @@ import 'package:mobile_assignment_fib_num/widget/item_widget.dart';
 const name = 'ItemTypeListBottomSheet';
 
 class ItemTypeListBottomSheet extends StatefulWidget {
-  final int? highLighNumber;
-  final FiboanacciType type;
+  final int? highlightNumberIndex;
+  final FibonacciType type;
   const ItemTypeListBottomSheet(
-      {super.key, this.highLighNumber, required this.type});
+      {super.key, this.highlightNumberIndex, required this.type});
 
   @override
   State<ItemTypeListBottomSheet> createState() =>
@@ -41,9 +41,11 @@ class _ItemTypeListBottomSheetState extends State<ItemTypeListBottomSheet> {
                 controller: controller,
                 itemBuilder: (context, index) {
                   final number = fibonacciList[index].number;
-                  final isHighLighted = number == widget.highLighNumber;
+                  final numberIndex = fibonacciList[index].numberIndex;
+                  final isHighLighted =
+                      numberIndex == widget.highlightNumberIndex;
                   final type = fibonacciList[index].type;
-                  final numberIndex = fibonacciList[index].index;
+                
 
                   return ItemWidget(
                       onTap: () {
@@ -51,7 +53,7 @@ class _ItemTypeListBottomSheetState extends State<ItemTypeListBottomSheet> {
                         context.read<FibonacciBloc>().add(
                               FibonacciRemoveNumber(
                                 type: type,
-                                number: number,
+                                numberIndex: numberIndex,
                               ),
                             );
                       },
