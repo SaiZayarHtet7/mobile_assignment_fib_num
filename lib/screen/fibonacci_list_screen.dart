@@ -105,7 +105,7 @@ class FibonacciListWidget extends StatelessWidget {
             index: numberIndex,
             selected: removeIndex == numberIndex,
             fibonacciNumber: number.toString(),
-            type: type);
+            type: type,);
       },
       itemCount: fibonacciList.length,
     );

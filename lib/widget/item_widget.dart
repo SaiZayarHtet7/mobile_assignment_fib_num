@@ -8,6 +8,7 @@ class ItemWidget extends StatelessWidget {
   final Function()? onTap;
   final bool? selected;
   final Color? color;
+  final bool isOnBottomSheet;
   const ItemWidget(
       {super.key,
       required this.index,
@@ -15,19 +16,21 @@ class ItemWidget extends StatelessWidget {
       required this.type,
       this.selected,
       this.color,
-      this.onTap});
+      this.onTap,
+      this.isOnBottomSheet = false});
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       minTileHeight: kToolbarHeight,
       onTap: onTap,
-      selectedTileColor: color?? Colors.green,
+      selectedTileColor: color ?? Colors.green,
       selected: selected ?? false,
       selectedColor: Colors.white,
       title: Text(
-        'index: $index ,Number: $fibonacciNumber',
+        '${isOnBottomSheet ? '' : 'index: $index ,'}Number: $fibonacciNumber',
       ),
+      subtitle: isOnBottomSheet ? Text('index: $index') : null,
       trailing: iconType(),
     );
   }

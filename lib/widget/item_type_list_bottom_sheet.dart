@@ -59,6 +59,7 @@ class _ItemTypeListBottomSheetState extends State<ItemTypeListBottomSheet> {
                       },
                       index: numberIndex,
                       selected: isHighLighted,
+                      isOnBottomSheet: true,
                       fibonacciNumber: number.toString(),
                       type: type);
                 },
